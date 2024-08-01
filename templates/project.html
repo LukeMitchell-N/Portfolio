@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 
+{block head}
+<style>
+    .navbar-inverse {
+        margin: 0px;
+    }
+</style>
+{endblock head}
 {% block title %}{{title}}{% endblock %}
 
-{% block page_content %}
-    <img id="proj_img" src ="/static/images/map.png" alt ="Map of Portland">
+{% block content %}
+    
+<div class="header-row" id="header-row" style="margin:0px; padding: 0px; overflow:hidden; height:400px;">
+   <div class="container-fluid" style="padding: 0px;">
+          <img src="/static/images/map.png" alt="Map of Portland" style="width: 100%;">
+    </div>
+</div>
+<!--<div class="bg" id='proj_img_div' height=400px style="-->
+<!--    background-image: url('/static/images/map.png');">-->
+<!--         test?-->
+<!--    </div>-->
 {% endblock %}
