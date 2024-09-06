@@ -4,9 +4,9 @@
 
 {% block head %}
 {{ super() }}
-<!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
--->
+
+{% block child_head%}{%endblock child_head %}
+
 {% endblock %}
 
 {% block navbar %}

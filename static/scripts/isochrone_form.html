@@ -1,0 +1,11 @@
+'<form role="form" id="form" enctype="multipart/form-data" class = "form-horizontal" onsubmit="addMarker()">'+
+            '<div class="form-group">'+
+                '<h1>Transit isochrone starting from '+coords.lat.toFixed(6)+', '+coords.lng.toFixed(6)</h1>'+
+                '<input type="text" id="lat" name="lat" value="'+coords.lat.toFixed(6)+'" />'+
+                '<input type="text" id="lng" name="lng" value="'+coords.lng.toFixed(6)+'" />'+
+                '<div class="form-group">'+
+                        '<div style="text-align:center;" class="col-xs-4 col-xs-offset-2"><button type="button" class="btn">Cancel</button></div>'+
+                        '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="submit" class="btn btn-primary trigger-submit">Submit</button></div>'+
+                '</div>'+
+            '</div>'+
+        '</form>';

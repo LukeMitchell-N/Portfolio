@@ -1,1 +1,5 @@
 venv/
+processing/grassaddons
+processing/__pycache__
+processing/outputs
+pycache/

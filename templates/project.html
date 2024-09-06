@@ -1,23 +1,59 @@
 {% extends "base.html" %}
 
-{block head}
-<style>
-    .navbar-inverse {
-        margin: 0px;
-    }
-</style>
-{endblock head}
+{% block child_head %}
+    <link rel="stylesheet" href="static/leaflet/css/leaflet.css">
+    <link rel="stylesheet" href="static/leaflet/css/L.Control.Locate.min.css">
+    <link rel="stylesheet" href="static/leaflet/css/qgis2web.css">
+    <link rel="stylesheet" href="static/leaflet/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="static/leaflet/css/leaflet-measure.css">
+    <style>
+        .navbar-inverse {
+            margin: 0px;
+        }
+        #map{
+            border: solid;
+            border-width: 5px;
+            border-color: black;
+            width: 90%;
+            height: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .leaflet-layer,
+        .leaflet-control-zoom-in,
+        .leaflet-control-zoom-out,
+        .leaflet-control-attribution {
+          filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
+    </style>
+{% endblock %}
+
 {% block title %}{{title}}{% endblock %}
 
 {% block content %}
     
-<div class="header-row" id="header-row" style="margin:0px; padding: 0px; overflow:hidden; height:400px;">
+<div class="header-row" id="header-row" style="margin:0px; padding: 0px; overflow:hidden; height:300px;">
    <div class="container-fluid" style="padding: 0px;">
           <img src="/static/images/map.png" alt="Map of Portland" style="width: 100%;">
     </div>
 </div>
-<!--<div class="bg" id='proj_img_div' height=400px style="-->
-<!--    background-image: url('/static/images/map.png');">-->
-<!--         test?-->
-<!--    </div>-->
+
+<div id="map"></div>
+
+<script src="static/leaflet/js/qgis2web_expressions.js"></script>
+<script src="static/leaflet/js/leaflet.js"></script>
+<script src="static/leaflet/js/L.Control.Locate.min.js"></script>
+<script src="static/leaflet/js/leaflet.rotatedMarker.js"></script>
+<script src="static/leaflet/js/leaflet.pattern.js"></script>
+<script src="static/leaflet/js/leaflet-hash.js"></script>
+<script src="static/leaflet/js/Autolinker.min.js"></script>
+<script src="static/leaflet/js/rbush.min.js"></script>
+<script src="static/leaflet/js/labelgun.min.js"></script>
+<script src="static/leaflet/js/labels.js"></script>
+<script src="static/leaflet/js/leaflet-measure.js"></script>
+<script src="static/leaflet/data/blocks_1.js"></script>
+<script src="static/leaflet/data/transit_network_2.js"></script>
+<script src="static/leaflet/data/street_network_3.js"></script>
+<script src="/static/scripts/create_map.js"></script>
+
 {% endblock %}
