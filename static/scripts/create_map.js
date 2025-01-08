@@ -232,22 +232,22 @@ function onMapClick(e) {
     var coords = e.latlng;
     var marker = new L.marker(e.latlng).addTo(map);
     var popupContent =
-    '<form role="form" id="form" enctype="multipart/form-data" class="form" >'+
-        '<div class="form-group" style:"float:left;">'+
-            '<h4>Generate transit isochrone from this location</h4>'+
-            '<label for="lat">Lat: </label>'+
-            '<input id="lat" type="text" readonly class="form-control" value="'+coords.lat.toFixed(6)+'"><br>'+
-            '<label for="lon">Lon: </label>'+
-            '<input id="lon" type="text" readonly class="form-control" value="'+coords.lng.toFixed(6)+'"><br>'+
-            '<label for="time">Time limit (minutes): </label>'+
-            '<input id="time" type="number" min="1" max ="60" class="form-control"><br>'+
-            '<label for="velocity">Walking speed (kph): </label>'+
-            '<input id="velocity" type="number" min="0" max ="60" value="4.5" class="form-control"><br>'+
-            '<div class="form-group">'+
-                    '<div style="text-align:center;" class="btn btn-primary"><button type="submit" value="submit" class="btn btn-primary trigger-submit">Submit</button></div>'+
-            '</div>'+
-        '</div>'+
-    '</form>';
+        '<form method="POST" role="form" id="form" enctype="multipart/form-data" class="form" >' +
+            '<div class="form-group" style:"float:left;">' +
+                '<h4>Generate transit isochrone from this location</h4>' +
+                '<label for="lat">Lat: </label>' +
+                '<input id="lat" name="lat" type="text" readonly class="form-control" value="' + coords.lat.toFixed(6) + '"><br>' +
+                '<label for="lon">Lon: </label>' +
+                '<input id="lon" name="lon" type="text" readonly class="form-control" value="' + coords.lng.toFixed(6) + '"><br>' +
+                '<label for="time">Time limit (minutes): </label>' +
+                '<input id="time" name="time" type="number" min="1" max ="60" class="form-control"><br>' +
+                '<label for="velocity">Walking speed (kph): </label>' +
+                '<input id="velocity" name="velocity" type="number" min="0" max ="60" step="0.01" value="4.5" class="form-control"><br>' +
+                '<div class="form-group">' +
+                    '<div style="text-align:center;" class="btn btn-primary"><button type="submit" value="submit" class="btn btn-primary trigger-submit">Submit</button></div>' +
+                '</div>' +
+            '</div>' +
+        '</form>';
 
     marker.bindPopup(popupContent,{
         keepInView: true,

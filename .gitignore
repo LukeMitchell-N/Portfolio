@@ -3,3 +3,5 @@ processing/grassaddons
 processing/__pycache__
 processing/outputs
 pycache/
+/.vs
+/__pycache__

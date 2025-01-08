@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from ctypes import sizeof
+from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
@@ -27,8 +28,17 @@ def index():
         printString(string)
     return render_template('home.html', form=form)
 
-@app.route('/project', methods=['GET'])
+@app.route('/project', methods=['GET', 'POST'])
 def project():
+    if request.method == "POST":
+        vform = request.form
+        print(vform)
+        args = request.args
+        print(args)
+        vals = request.values
+        print(vals)
+        
+
     return render_template('project.html', title="boobah")
 
 if __name__ == "__main__":
