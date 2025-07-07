@@ -1,3 +1,6 @@
 flask==3.1.1
 flask_bootstrap==3.3.7.1
 flask_wtf==1.2.2
+git==2.50.0
+gh==2.74.2
+vim==9.1
