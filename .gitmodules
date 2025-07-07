@@ -1,0 +1,3 @@
+[submodule "processing/TransitIsochroneTool"]
+	path = processing/TransitIsochroneTool
+	url = https://github.com/LukeMitchell-N/TransitIsochroneBare
