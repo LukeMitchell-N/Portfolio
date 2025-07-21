@@ -30,14 +30,17 @@ def index():
 @app.route('/project', methods=['GET', 'POST'])
 def project():
     if request.method == "POST":
-        vform = request.form
-        print(vform)
-        args = request.args
-        print(args)
-        vals = request.values
-        print(vals)
+        lat = request.form['lat']
+        lon = request.form['lon']
+        crs = request.form['crs']
+        time_constraint = request.form['time']
+
+        print(f"Lat :{lat}")
+        print(f"Lon :{lon}")
+        print(f"Crs :{crs}")
+        print(f"Time constraint :{time_constraint}")
         
-    return render_template('project.html', title="boobah")
+    return render_template('project.html', title="Portland Transit Isochrone")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

@@ -223,7 +223,7 @@ map.addLayer(layer_transit_network_2);
 
 
 var baseMaps = {};
-L.control.layers(baseMaps,{'<img src="legend/street_network_3.png" /> street_network': layer_street_network_3,'<img src="legend/transit_network_2.png" /> transit_network': layer_transit_network_2,'<img src="legend/blocks_1.png" /> blocks': layer_blocks_1,"OpenStreetMap": layer_OpenStreetMap_0,}).addTo(map);
+L.control.layers(baseMaps,{'<img src="../legend/street_network_3.png" /> street_network': layer_street_network_3,'<img src="legend/transit_network_2.png" /> transit_network': layer_transit_network_2,'<img src="legend/blocks_1.png" /> blocks': layer_blocks_1,"OpenStreetMap": layer_OpenStreetMap_0,}).addTo(map);
 setBounds();
 
 var featureGroup = L.featureGroup().addTo(map);
@@ -239,6 +239,7 @@ function onMapClick(e) {
                 '<input id="lat" name="lat" type="text" readonly class="form-control" value="' + coords.lat.toFixed(6) + '"><br>' +
                 '<label for="lon">Lon: </label>' +
                 '<input id="lon" name="lon" type="text" readonly class="form-control" value="' + coords.lng.toFixed(6) + '"><br>' +
+                '<input id="crs" name="crs" type="hidden" value="' + map.options.crs.code + '">' +
                 '<label for="time">Time limit (minutes): </label>' +
                 '<input id="time" name="time" type="number" min="1" max ="60" class="form-control"><br>' +
                 '<label for="velocity">Walking speed (kph): </label>' +
