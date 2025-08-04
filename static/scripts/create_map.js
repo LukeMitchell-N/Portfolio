@@ -1,3 +1,5 @@
+import { search_area_style, walking_style, area_style, transit_style } from './styles.js'
+
 var map = L.map('map', {
     center: [45.519177, -122.677],
     zoom: 10,
@@ -75,7 +77,7 @@ async function loadGeoJsonData(file_path) {
     }
 }
 
-function addGeoJsonToMap(file_path, name, pane_name, z_index) {
+function addGeoJsonToMap(file_path, name, pane_name, z_index, style_func = {}) {
     return loadGeoJsonData(file_path).then(geojsonData => {
         if (geojsonData) {
             map.createPane(pane_name);
@@ -83,7 +85,8 @@ function addGeoJsonToMap(file_path, name, pane_name, z_index) {
 
             const lyr = L.geoJSON(geojsonData, {
                 pane: pane_name,
-                name: name
+                name: name,
+                style: style_func
             });
 
             lyr.addTo(map);
@@ -100,22 +103,21 @@ async function add_layers() {
             '/static/leaflet/data/search_area.geojson',
             "Search Area",
             "Search_pane",
-            401
+            401,
+            search_area_style
         )
     }
     else {                                                              // otherwise, load the layers passed in through 'filenames'
-        console.log("filenames: " + filenames)
-        console.log("filenames[Area]: " + filenames["Area"])
         if (filenames["Area"] && filenames["Area"] != "None") {
-            await addGeoJsonToMap(filenames["Area"], "Area", "Area_Pane", 402);
+            await addGeoJsonToMap(filenames["Area"], "Reachable Blocks", "Area_Pane", 401, area_style);
             console.log("Added area polygon to map at path " + filenames["Area"]);
         }
         if (filenames["Walking"] && filenames["Walking"] != "None") {
-            await addGeoJsonToMap(filenames["Walking"], "Walking", "Walking_Pane", 402);
+            await addGeoJsonToMap(filenames["Walking"], "Reachable Walking Network", "Walking_Pane", 402, walking_style);
             console.log("Added Walking polyline to map at path " + filenames["Walking"]);
         }
         if (filenames["Transit"] && filenames["Transit"] != "None") {
-            await addGeoJsonToMap(filenames["Transit"], "Transit", "Transit_Pane", 402);
+            await addGeoJsonToMap(filenames["Transit"], "Reachable Transit Network", "Transit_Pane", 403, transit_style);
             console.log("Added Transit polyline to map at path " + filenames["Transit"]);
         }
     }
