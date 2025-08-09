@@ -1,4 +1,4 @@
-import { search_area_style, walking_style, area_style, transit_style } from './styles.js'
+import { search_area_style, walking_style, area_style, transit_style } from './layer_styles.js'
 
 var map = L.map('map', {
     center: [45.519177, -122.677],
@@ -136,9 +136,13 @@ function onMapClick(e) {
             '<div class="form-group" style:"float:left;">' +
                 '<h4>Generate transit isochrone from this location</h4>' +
                 '<label for="lat">Lat: </label>' +
-                '<input id="lat" name="lat" type="text" readonly class="form-control" value="' + projcoords.x.toFixed(6) + '"><br>' +
+                '<input id="lat" name="lat" type="text" readonly class="form-control" value="' + coords.lat.toFixed(6) + '"><br>' +
                 '<label for="lon">Lon: </label>' +
-                '<input id="lon" name="lon" type="text" readonly class="form-control" value="' + projcoords.y.toFixed(6) + '"><br>' +
+                '<input id="lon" name="lon" type="text" readonly class="form-control" value="' + coords.lng.toFixed(6) + '"><br>' +
+
+                '<input id="x" name="x" type="hidden" value="' + projcoords.x.toFixed(6) + '">' +
+                '<input id="y" name="y" type="hidden" value="' + projcoords.y.toFixed(6) + '">' +
+
                 '<input id="crs" name="crs" type="hidden" value="' + map.options.crs.code + '">' +
                 '<label for="time">Time limit (minutes): </label>' +
                 '<input id="time" name="time" type="number" min="1" max ="60" class="form-control"><br>' +
