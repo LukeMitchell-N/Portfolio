@@ -17,8 +17,8 @@
         margin-right: auto;
     }
 
-    .leaflet-layer{
-        filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+    .leaflet-layer {
+        filter: hue-rotate(315deg) invert(100%) brightness(100%) contrast(100%);
     }
 </style>
 {% endblock %}
@@ -41,6 +41,7 @@
     </script>
 {% endif %}
 
+<p id="status_box">Testing</p>
 <div id="map"></div>
 
 <script src="static/leaflet/js/qgis2web_expressions.js"></script>
@@ -59,7 +60,7 @@
 <script src="static/leaflet/data/transit_network.js"></script>
 <script src="static/leaflet/data/street_network_3.js"></script>
 
-<script src="/static/scripts/styles.js"></script>
+<script src="/static/scripts/layer_styles.js" type="module"></script>
 <script type ="module" src="/static/scripts/create_map.js"></script>
 
 {% endblock %}

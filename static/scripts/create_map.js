@@ -80,6 +80,7 @@ async function loadGeoJsonData(file_path) {
 function addGeoJsonToMap(file_path, name, pane_name, z_index, style_func = {}) {
     return loadGeoJsonData(file_path).then(geojsonData => {
         if (geojsonData) {
+            
             map.createPane(pane_name);
             map.getPane(pane_name).style.zIndex = z_index;
 
@@ -96,44 +97,51 @@ function addGeoJsonToMap(file_path, name, pane_name, z_index, style_func = {}) {
     });
 }
 
+async function add_output_layer(path, type) {
+    console.log("Path = " + path + ", type = " + type)
+    let name = "", z_index = 1, style = "";
+    switch (type) {
+        case "Blocks":
+            name = "Reachable Blocks";
+            z_index = 402;
+            style = area_style;
+            break;
+        case "Walking":
+            name = "Reachable Walking Network";
+            z_index = 403;
+            style = walking_style;
+            break;
+        case "Transit":
+            name = "Reachable Transit Network";
+            z_index = 404;
+            style = transit_style
+            break;
+    }
+    await addGeoJsonToMap(path, name, name+"_Pane", z_index, style);
+    console.log("Added " + type + " layer to map.");
 
-async function add_layers() {
-    if (typeof filenames === 'undefined' || filenames == "Null") {      // If the tool has not yet been run, display the search bounds
-        await addGeoJsonToMap(
-            '/static/leaflet/data/search_area.geojson',
-            "Search Area",
-            "Search_pane",
-            401,
-            search_area_style
-        )
-    }
-    else {                                                              // otherwise, load the layers passed in through 'filenames'
-        if (filenames["Area"] && filenames["Area"] != "None") {
-            await addGeoJsonToMap(filenames["Area"], "Reachable Blocks", "Area_Pane", 401, area_style);
-            console.log("Added area polygon to map at path " + filenames["Area"]);
-        }
-        if (filenames["Walking"] && filenames["Walking"] != "None") {
-            await addGeoJsonToMap(filenames["Walking"], "Reachable Walking Network", "Walking_Pane", 402, walking_style);
-            console.log("Added Walking polyline to map at path " + filenames["Walking"]);
-        }
-        if (filenames["Transit"] && filenames["Transit"] != "None") {
-            await addGeoJsonToMap(filenames["Transit"], "Reachable Transit Network", "Transit_Pane", 403, transit_style);
-            console.log("Added Transit polyline to map at path " + filenames["Transit"]);
-        }
-    }
-    setBounds();
 }
-add_layers()
 
 
+await addGeoJsonToMap(
+    '/static/leaflet/data/search_area.geojson',
+    "Search Area",
+    "Search_pane",
+    401,
+    search_area_style
+);
+
+let marker = null
 
 function onMapClick(e) {
     var coords = e.latlng;
     var projcoords = map.options.crs.project(coords);
-    var marker = new L.marker(e.latlng).addTo(map);
-    var popupContent =
-        '<form method="POST" role="form" id="form" enctype="multipart/form-data" class="form" >' +
-            '<div class="form-group" style:"float:left;">' +
+    marker = L.marker(e.latlng,
+        {interactive: true}).addTo(map);
+
+    const popupContent =
+        '<form id="iso_form" class="form" >' +
+            '<div class="form-group" >' +
                 '<h4>Generate transit isochrone from this location</h4>' +
                 '<label for="lat">Lat: </label>' +
                 '<input id="lat" name="lat" type="text" readonly class="form-control" value="' + coords.lat.toFixed(6) + '"><br>' +
@@ -154,20 +162,78 @@ function onMapClick(e) {
             '</div>' +
         '</form>';
 
-    marker.bindPopup(popupContent,{
+    marker.on('popupopen', function(e){
+        const form = document.getElementById('iso_form');
+        const statusBox = document.getElementById('status_box');
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+            map.removeLayer(marker);
+            marker = null;
+            statusBox.textContent = "Submitting..";
+
+            try {
+                console.log("Form data: " + new FormData(form));
+                const resp = await fetch('/run_isochrone_tool', {
+                    method: 'POST',
+                    body: new FormData(form)
+                });
+                console.log("Hello?")
+                
+                if (!resp.ok) {
+                    throw new Error(`HTTP ${resp.status}`);
+                }
+
+                const data = await resp.json();
+                const pid = data.pid
+                console.log("data: " + JSON.stringify(data))
+                console.log("data.pid = " + data.pid)
+                statusBox.textContent = `Process started (ID: ${pid})`;
+
+                // 7. Open SSE stream for live updates
+                const es = new EventSource(`/stream/${pid}`);
+                es.onmessage = event => {
+                    console.log("new message: " + event.data)
+                    if (event.data.startsWith("Layer Update")) {
+                        const chunks = event.data.split(" - ");
+                        add_output_layer(chunks[2], chunks[1]);
+                    }
+                    statusBox.textContent = event.data;
+                };
+                es.onerror = () => {
+                    statusBox.textContent += ' (stream closed)';
+                    es.close();
+                };
+
+            } catch (err) {
+                statusBox.textContent = `Error: ${err.message}`;
+            }
+
+        })
+    });
+
+
+    marker.bindPopup(popupContent, {
         keepInView: true,
         closeButton: true
-    }).openPopup();
+    });
+    marker.openPopup();
 
     marker.on('popupclose', function(e){
         map.removeLayer(marker);
+        marker = null;
     });
 
 }
 
 map.on('popupopen', function(e){
     map.setMaxBounds(null)});
-map.on('popupclose', function(e){
-    map.setMaxBounds(bounds_group.getBounds())});
-map.on('click', onMapClick);
+//map.on('popupclose', function(e){
+//    map.setMaxBounds(bounds_group.getBounds())});
+map.on('click', function (e) {
+    if (marker) {
+        map.removeLayer(marker)
+    }
+    onMapClick(e)
+});
 
