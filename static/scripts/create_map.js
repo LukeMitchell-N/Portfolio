@@ -29,7 +29,7 @@ document.getElementsByClassName('leaflet-control-measure-toggle')[0].className +
 var bounds_group = new L.featureGroup();
 
 function setBounds() {
-    console.log(bounds_group.getLayers())
+    //console.log(bounds_group.getLayers())
     if (bounds_group.getLayers().length) {
         map.fitBounds(bounds_group.getBounds());
         map.setMaxBounds(bounds_group.getBounds().pad(.25));
@@ -80,16 +80,27 @@ async function loadGeoJsonData(file_path) {
 function addGeoJsonToMap(file_path, name, pane_name, z_index, style_func = {}) {
     return loadGeoJsonData(file_path).then(geojsonData => {
         if (geojsonData) {
-            
-            map.createPane(pane_name);
+            console.log("??");
+            if (!map.getPane(pane_name)){
+                map.createPane(pane_name);
+            }
             map.getPane(pane_name).style.zIndex = z_index;
 
+            
             const lyr = L.geoJSON(geojsonData, {
                 pane: pane_name,
                 name: name,
                 style: style_func
             });
 
+            bounds_group.eachLayer(function (l) {
+                if (l.options.name == name) {
+                    bounds_group.removeLayer(l);
+                    map.removeLayer(l);
+                    layerControl.removeLayer(l)
+                }
+            });
+            
             lyr.addTo(map);
             lyr.addTo(bounds_group)
             layerControl.addOverlay(lyr, name)
@@ -98,7 +109,6 @@ function addGeoJsonToMap(file_path, name, pane_name, z_index, style_func = {}) {
 }
 
 async function add_output_layer(path, type) {
-    console.log("Path = " + path + ", type = " + type)
     let name = "", z_index = 1, style = "";
     switch (type) {
         case "Blocks":
@@ -178,7 +188,6 @@ function onMapClick(e) {
                     method: 'POST',
                     body: new FormData(form)
                 });
-                console.log("Hello?")
                 
                 if (!resp.ok) {
                     throw new Error(`HTTP ${resp.status}`);
@@ -186,14 +195,13 @@ function onMapClick(e) {
 
                 const data = await resp.json();
                 const pid = data.pid
-                console.log("data: " + JSON.stringify(data))
                 console.log("data.pid = " + data.pid)
                 statusBox.textContent = `Process started (ID: ${pid})`;
 
                 // 7. Open SSE stream for live updates
                 const es = new EventSource(`/stream/${pid}`);
                 es.onmessage = event => {
-                    console.log("new message: " + event.data)
+                    //console.log("new message: " + event.data)
                     if (event.data.startsWith("Layer Update")) {
                         const chunks = event.data.split(" - ");
                         add_output_layer(chunks[2], chunks[1]);
