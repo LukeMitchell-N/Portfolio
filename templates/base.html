@@ -1,34 +1,42 @@
-{% extends "bootstrap/base.html" %}
-
-{% block title %}Luke Mitchell{% endblock %}
+{% block title %}
+<title>{{title}}</title>
+{% endblock %}
 
 {% block head %}
-{{ super() }}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
 
 {% block child_head%}{%endblock child_head %}
 
 {% endblock %}
 
 {% block navbar %}
-<div class="navbar-inverse" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                
-            </button>
-            <a class="navbar-brand" href="/" >Luke Mitchell</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-                <li><a href="/projects">Projects</a></li>
-                <li><a href="/project">Test Project</a></li>
-                <li><a href="/resume">Resume</a></li>
+
+<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+    <div class="container-fluid" style="width: 80%">
+        <a class="navbar-brand" href="/">Luke Mitchell</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="{{ 'nav-link active' if active_page == 'home' else 'nav-link' }}" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="{{ 'nav-link active' if active_page == 'projects' else 'nav-link' }}" href="/projects">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="{{ 'nav-link active' if active_page == 'project' else 'nav-link' }}" href="/project">Test Project</a>
+                </li>
+                <li class="nav-item">
+                    <a class="{{ 'nav-link active' if active_page == 'resume' else 'nav-link' }}" href="/resume">Resume</a>
+                </li>
             </ul>
         </div>
     </div>
-</div>
+</nav>
 {% endblock %}
 
 {% block content %}

@@ -7,42 +7,57 @@
 <link rel="stylesheet" href="static/leaflet/css/fontawesome-all.min.css">
 <link rel="stylesheet" href="static/leaflet/css/leaflet-measure.css">
 <style>
-    #map {
+
+    #outer {
+        width: 80%;
+        height: 80%;
+    }
+    .main_box {
         border: solid;
         border-width: 5px;
         border-color: black;
-        width: 60%;
-        height: 500px;
         margin-left: auto;
         margin-right: auto;
+        margin-top: 5px;
     }
 
-    .leaflet-layer {
-        filter: hue-rotate(315deg) invert(100%) brightness(100%) contrast(100%);
+    #map {
+        height: 100%;
+        width: 100%;
     }
+
+    #console_box {
+        background-color: black;
+        color: limegreen;
+        padding: 5px 10px;
+        font-family: monospace;
+    }
+
+    #status_box {
+        background-color: limegreen;
+        color: black;
+        padding: 5px 10px;
+        font-weight: bold;
+    }
+
 </style>
 {% endblock %}
 
-{% block title %}{{title}}{% endblock %}
-
 {% block content %}
 
-<div class="header-row" id="header-row" style="margin:0px; padding: 0px; overflow:hidden;">
-    <div class="container-fluid" style="padding: 0px;">
-        <img src="/static/images/map.png" alt="Map of Portland" style="width: 100%;">
+<div class="container-fluid" id="outer">
+    <div class="main_box">
+        <div id="map"></div>
+        <div id="console_box">
+            Console
+        </div>
+        <div id="status_box">
+            Status
+        </div>
     </div>
 </div>
 
-{% if files %}
-    <h1>WE DID IT</h1>
-    <h1>FILES EXIST AT {{ files | tojson}}</h1>
-    <script>
-        filenames = {{ files | default ("Null") | tojson }};
-    </script>
-{% endif %}
 
-<p id="status_box">Testing</p>
-<div id="map"></div>
 
 <script src="static/leaflet/js/qgis2web_expressions.js"></script>
 <script src="static/leaflet/js/leaflet.js"></script>
@@ -61,6 +76,6 @@
 <script src="static/leaflet/data/street_network_3.js"></script>
 
 <script src="/static/scripts/layer_styles.js" type="module"></script>
-<script type ="module" src="/static/scripts/create_map.js"></script>
+<script type="module" src="/static/scripts/create_map.js"></script>
 
 {% endblock %}

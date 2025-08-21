@@ -5,7 +5,6 @@ from flask import   (Flask, jsonify,
                     request,
                     Response,
                     send_from_directory)
-from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -20,29 +19,17 @@ import ExecSearch
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
 
-bootstrap = Bootstrap(app)
-
 feedback_queues = {}
-
-
-class printForm(FlaskForm):
-    string = StringField('What should be printed?', validators=[DataRequired()])
-    submit = SubmitField('Submit')
 
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    string = None
-    form = printForm()
-    if form.validate_on_submit():
-        string = form.string.data
-        form.string.data = ''
-    return render_template('home.html', form=form)
+    return render_template('home.html', title="Home", active_page="home")
 
 @app.route('/project', methods=['GET'])
 def project():
-    return render_template('project.html', title="Portland Transit Isochrone")
+    return render_template('project.html', title="Portland Transit Isochrone", active_page="project")
 
 
 def enqueue_output(process, queue):

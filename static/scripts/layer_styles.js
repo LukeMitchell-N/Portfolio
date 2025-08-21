@@ -10,7 +10,7 @@ export function area_style(feature) {
     return {
         fillColor: '#db408b',
         fillOpacity: .3,
-        color: '#78254d',
+        color: '#a3366b',
         opacity: 1,
         weight: 2,
     };
@@ -24,7 +24,7 @@ export function walking_style(feature) {
 }
 export function transit_style(feature) {
     return {
-        color: '#bf6622',
+        color: '#8a1101',
         opacity: 1,
         weight: 3,
     };

@@ -1,0 +1,38 @@
+<form id="iso_form">
+    <h2 class="text-center">Generate transit isochrone from this location</h2>
+
+    <div class="row">
+        <div class="input-group input-group-sm">
+            <span class="col-4 input-group-text bg-dark text-light" id="inputGroup-sizing-sm">Lat</span>
+            <input id="lat" name="lat" type="text" readonly class="form-control col"><br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-group input-group-sm">
+            <span class="col-4 input-group-text bg-dark text-light" id="inputGroup-sizing-sm">Lon</span>
+            <input id="lon" name="lon" type="text" readonly class="form-control"><br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-group input-group-sm">
+            <span class="col-4 input-group-text bg-dark text-light" id="inputGroup-sizing-sm">Time (minutes)</span>
+            <input id="time" name="time" type="number" min="1" max="60" class="form-control"><br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-group input-group-sm">
+            <span class="col-4 input-group-text bg-dark text-light" id="inputGroup-sizing-sm">Walking speed (kph)</span>
+            <input id="velocity" name="velocity" type="number" min="0" max="20" step="0.01" value="5.2" class="form-control"><br>
+        </div>
+    </div>
+
+    <input id="x" name="x" type="hidden">
+    <input id="y" name="y" type="hidden">
+    <input id="crs" name="crs" type="hidden">
+
+
+    <div><button type="submit" class="btn-sm btn-primary trigger-submit mt-2">Submit</button></div>
+</form>
