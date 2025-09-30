@@ -1,5 +1,5 @@
 # Use a base image with QGIS pre-installed (simplifies dependencies)
-FROM 3liz/qgis-platform:3.44
+FROM 3liz/qgis-platform:3.28
 
 # Set environment variables
 ENV TZ=UTC
@@ -10,14 +10,12 @@ SHELL ["/bin/bash", "-c"]
 RUN apt update && \
 	apt install -y  \
 		python3-pip \
-		git			\
-		vim			\
-		gh 
-
+		vim						
+	
 COPY . /portfolio_app
 
-# Create and enter a python virtual env
-RUN python3 -m pip install -r ./portfolio_app/requirements.txt --break-system-packages
+# Configure python libraries
+RUN python3 -m pip install -r ./portfolio_app/requirements.txt --break-system-packages --ignore-installed
 
 # Set working directory
 WORKDIR /portfolio_app
