@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block child_head %}
+<link rel="stylesheet" href="static/leaflet/css/leaflet.css">
+<link rel="stylesheet" href="static/leaflet/css/L.Control.Locate.min.css">
+<link rel="stylesheet" href="static/leaflet/css/qgis2web.css">
+<link rel="stylesheet" href="static/leaflet/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="static/leaflet/css/leaflet-measure.css">
+<style>
+
+    #outer {
+        width: 90%;
+        height: 80%;
+    }
+    #main_box {
+        border: solid;
+        border-width: 5px;
+        border-color: black;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5px;
+    }
+
+    #map {
+        height: 100%;
+        width: 100%;
+    }
+
+    #console_box {
+        background-color: black;
+        color: limegreen;
+        padding: 5px 10px;
+        font-family: monospace;
+    }
+
+    #status_box {
+        background-color: limegreen;
+        color: black;
+        padding: 5px 10px;
+        font-weight: bold;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid" id="outer">
+    <div id="main_box">
+        <div id="map"></div>
+    </div>
+</div>
+
+
+
+<script src="static/leaflet/js/qgis2web_expressions.js"></script>
+<script src="static/leaflet/js/leaflet.js"></script>
+<script src="static/leaflet/js/L.Control.Locate.min.js"></script>
+<script src="static/leaflet/js/leaflet.rotatedMarker.js"></script>
+<script src="static/leaflet/js/leaflet.pattern.js"></script>
+<script src="static/leaflet/js/leaflet-hash.js"></script>
+<script src="static/leaflet/js/Autolinker.min.js"></script>
+<script src="static/leaflet/js/rbush.min.js"></script>
+<script src="static/leaflet/js/labelgun.min.js"></script>
+<script src="static/leaflet/js/labels.js"></script>
+<script src="static/leaflet/js/leaflet-measure.js"></script>
+
+<script src="static/leaflet/data/blocks_1.js"></script>
+<script src="static/leaflet/data/transit_network.js"></script>
+<script src="static/leaflet/data/street_network_3.js"></script>
+
+<script src="/static/scripts/layer_styles.js" type="module"></script>
+<script type="module" src="/static/scripts/create_isochrone_map.js"></script>
+
+{% endblock %}

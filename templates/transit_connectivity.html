@@ -9,10 +9,10 @@
 <style>
 
     #outer {
-        width: 80%;
-        height: 80%;
+        width: 90%;
+        height: 90%;
     }
-    .main_box {
+    #main_box {
         border: solid;
         border-width: 5px;
         border-color: black;
@@ -46,14 +46,8 @@
 {% block content %}
 
 <div class="container-fluid" id="outer">
-    <div class="main_box">
+    <div id="main_box">
         <div id="map"></div>
-        <div id="console_box">
-            Console
-        </div>
-        <div id="status_box">
-            Status
-        </div>
     </div>
 </div>
 
@@ -76,6 +70,6 @@
 <script src="static/leaflet/data/street_network_3.js"></script>
 
 <script src="/static/scripts/layer_styles.js" type="module"></script>
-<script type="module" src="/static/scripts/create_map.js"></script>
+<script type="module" src="/static/scripts/create_connectivity_map.js"></script>
 
 {% endblock %}

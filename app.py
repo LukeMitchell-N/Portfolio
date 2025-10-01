@@ -17,46 +17,55 @@ sys.path.append('processing/TransitIsochroneTool')
 import ExecSearch
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'hard to guess string'
 
-feedback_queues = {}
-
+def run_app():
+    app.run(debug=True, host="0.0.0.0", port=5000)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('home.html', title="Home", active_page="home")
 
-@app.route('/project', methods=['GET'])
-def project():
-    return render_template('project.html', title="Portland Transit Isochrone", active_page="project")
+@app.route('/transit_isochrone', methods=['GET'])
+def transit_iso():
+    return render_template('transit_isochrone.html', title="Portland Transit Isochrone", active_page="transit_isochrone")
 
+@app.route('/nca_map', methods=['GET'])
+def nca_map():
+    return render_template('nca_map.html', title="Neighbors for Clean Air Map")
+
+@app.route('/gis_II_portfolio', methods=['GET'])
+def gis_ii_portfolio():
+    return render_template('GIS_II_portfolio.html', title="GIS II Portfolio")
+
+@app.route('/transit_connectivity', methods=['GET'])
+def transit_connectivity():
+    return render_template('transit_connectivity.html', title="Portland Transit Connectivity", active_page = "transit_connectivity")
 
 def enqueue_output(process, queue):
     for line in process.stdout:
         queue.put(line.rstrip())
     queue.put("DONE")
 
-
-
-
-
+feedback_queues = {}
 @app.route("/run_isochrone_tool", methods=['POST'])
 def run_iso():
 
+    
     lat = request.form['lat']
     lon = request.form['lon']
     x = request.form['x']
     y = request.form['y']
     crs = request.form['crs']
     time_constraint = request.form['time']
-
+    '''
     print(f"Lat :{lat}")
     print(f"Y :{y}")
     print(f"Lon :{lon}")
     print(f"X :{x}")
     print(f"Crs :{crs}")
     print(f"Time constraint :{time_constraint}")
+    '''
 
     start_loc = x.__str__() + ',' + y.__str__() + f' [{crs}]'
 
@@ -74,7 +83,6 @@ def run_iso():
     process_id = str(uuid.uuid4())                                          # Generate a unique ID for the process
     new_queue = queue.Queue()                                               # Create a queue for the piped output from the geoprocessing script
     feedback_queues[process_id] = new_queue                                 # Save the queue to a list of running task output queues
-            
     threading.Thread(target=enqueue_output,                                 # Spin up a new thread to keep track of moving the stdout to the queue
                      args=(process,                                         
                            new_queue), 
@@ -111,3 +119,4 @@ def serve_tmp_file(filename):
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
+
