@@ -12,10 +12,14 @@ RUN apt update && \
 		python3-pip \
 		vim						
 	
-COPY . /portfolio_app
+COPY app.py processing requirements.txt static templates /portfolio_app
+
+
+RUN python3 -m venv .venv &&
+	source .venv/bin/activate
 
 # Configure python libraries
-RUN python3 -m pip install -r ./portfolio_app/requirements.txt --break-system-packages --ignore-installed
+RUN python3 -m pip install -r ./portfolio_app/requirements.txt  --ignore-installed
 
 # Set working directory
 WORKDIR /portfolio_app
