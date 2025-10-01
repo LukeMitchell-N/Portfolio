@@ -12,10 +12,10 @@ RUN apt update && \
 		python3-pip \
 		vim						
 	
-COPY app.py processing requirements.txt static templates /portfolio_app
+COPY app.py processing/ requirements.txt static/ templates/ /portfolio_app/
 
 
-RUN python3 -m venv .venv &&
+RUN python3 -m venv .venv &&	\
 	source .venv/bin/activate
 
 # Configure python libraries
