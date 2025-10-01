@@ -14,7 +14,7 @@ import sys,             \
     queue,              \
     threading
 sys.path.append('processing/TransitIsochroneTool')
-import ExecSearch
+feedback_queues = {}
 
 app = Flask(__name__)
 
@@ -47,7 +47,7 @@ def enqueue_output(process, queue):
         queue.put(line.rstrip())
     queue.put("DONE")
 
-feedback_queues = {}
+
 @app.route("/run_isochrone_tool", methods=['POST'])
 def run_iso():
 
@@ -94,11 +94,11 @@ def run_iso():
 
 @app.route("/stream/<process_id>")
 def stream_process_feedback(process_id):
-    queue = feedback_queues[process_id]
-    if not queue:
+    if not feedback_queues[process_id]:
         print("Queue not found")
         return "Process not found", 404
 
+    queue = feedback_queues[process_id]
     def stream_from_queue(queue):
         while True:
             line = queue.get()
