@@ -1,3 +1,5 @@
 flask==3.1.1
 flask_bootstrap==3.3.7.1
 flask_wtf==1.2.2
+gunicorn==22.0.0
+gevent==25.9.1
