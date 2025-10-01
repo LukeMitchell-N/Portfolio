@@ -12,7 +12,10 @@ RUN apt update && \
 		python3-pip \
 		vim						
 	
-COPY app.py processing/ requirements.txt static/ templates/ /portfolio_app/
+COPY app.py requirements.txt /portfolio_app
+COPY processing portfolio_app/processing
+COPY static/ portfolio_app/static
+COPY templates/ portfolio_app/templates
 
 
 RUN python3 -m venv .venv &&	\
