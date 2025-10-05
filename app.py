@@ -102,6 +102,7 @@ def stream_process_feedback(process_id):
     def stream_from_queue(queue):
         while True:
             line = queue.get()
+            print("within stream_from_queue, line = ", line)
             if line == "DONE":
                 break
             yield f"data: {line}\n\n"

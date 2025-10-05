@@ -12,8 +12,8 @@ RUN apt update && \
 		python3-pip \
 		vim						
 	
-COPY app.py requirements.txt /portfolio_app
-COPY processing portfolio_app/processing
+COPY app.py requirements.txt /portfolio_app/
+COPY processing/ portfolio_app/processing
 COPY static/ portfolio_app/static
 COPY templates/ portfolio_app/templates
 
