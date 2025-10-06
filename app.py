@@ -4,7 +4,7 @@ from flask import   (Flask, jsonify,
                     render_template, 
                     request,
                     Response,
-                    send_from_directory)
+                    send_from_directory, stream_with_context)
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -99,17 +99,20 @@ def stream_process_feedback(process_id):
         return "Process not found", 404
 
     queue = feedback_queues[process_id]
+    @stream_with_context
     def stream_from_queue(queue):
-        while True:
-            line = queue.get()
-            print("within stream_from_queue, line = ", line)
-            if line == "DONE":
-                break
-            yield f"data: {line}\n\n"
-        feedback_queues.pop(process_id, None)        # Clean up once queue is empty
+        try:
+            while True:
+                line = queue.get()
+                print("within stream_from_queue, line = ", line)
+                if line == "DONE":
+                    break
+                yield f"data: {line}\n\n"
+        finally:
+            feedback_queues.pop(process_id, None)        # Clean up once queue is empty
 
 
-    return Response(stream_from_queue(queue), mimetype='text/event-stream')
+    return Response(stream_from_queue(queue), content_type='text/event-stream')
  
 
 @app.route('/tmp/<path:filename>')
