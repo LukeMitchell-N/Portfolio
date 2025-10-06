@@ -152,7 +152,7 @@ addGeoJsonToMap(
         map.fitBounds(layer.getBounds())
     }
     else {
-        console.log("Search layer not addd")
+        console.log("Search layer not added")
     }
 });
 
@@ -232,7 +232,7 @@ function onMapClick(e) {
                 // Open SSE stream for live updates
                 const es = new EventSource(`/stream/${pid}`);
                 es.onmessage = event => {
-                    console.log("new message: " + event.data)
+                    //console.log("new message: " + event.data)
                     if (event.data.startsWith("Layer Update")) {
                         const chunks = event.data.split(" - ");
                         add_output_layer(chunks[2], chunks[1]);
@@ -240,6 +240,9 @@ function onMapClick(e) {
                     else if (event.data.startsWith("$$ ")) {
                         const statusUpdate = event.data.split("$$ ")[1];
                         statusBox.textContent = statusUpdate;
+                    }
+                    else if (event.data.startsWith("DONE")) {
+                        es.close();
                     }
                     else{
                         //console.log(event.data);
