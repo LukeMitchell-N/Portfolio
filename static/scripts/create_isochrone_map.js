@@ -232,7 +232,7 @@ function onMapClick(e) {
                 // Open SSE stream for live updates
                 const es = new EventSource(`/stream/${pid}`);
                 es.onmessage = event => {
-                    //console.log("new message: " + event.data)
+                    console.log("new message: " + event.data)
                     if (event.data.startsWith("Layer Update")) {
                         const chunks = event.data.split(" - ");
                         add_output_layer(chunks[2], chunks[1]);
@@ -247,7 +247,7 @@ function onMapClick(e) {
                     }
                 };
                 es.onerror = () => {
-                    //consoleBox.textContent += ' (stream closed)';
+                    consoleBox.textContent += ' (Error detected - stream closed)';
                     es.close();
                 };
 
