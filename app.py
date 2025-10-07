@@ -12,7 +12,8 @@ import sys,             \
     uuid,               \
     subprocess,         \
     queue,              \
-    threading
+    threading,          \
+    psutil
 sys.path.append('processing/TransitIsochroneTool')
 feedback_queues = {}
 
@@ -45,6 +46,9 @@ def transit_connectivity():
 def enqueue_output(process, queue):
     for line in process.stdout:
         queue.put(line.rstrip())
+        print(psutil.Process(process.pid).memory_percent())
+    for e in process.stderr:
+        print("Error: ", e)
     queue.put("DONE")
 
 
@@ -118,7 +122,7 @@ def stream_process_feedback(process_id):
 
 @app.route('/tmp/<path:filename>')
 def serve_tmp_file(filename):
-    print(f"filename is {filename}")
+    #(f"filename is {filename}")
     return send_from_directory('/tmp', filename)
 
 
